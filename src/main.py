@@ -46,15 +46,10 @@ def main():
     # 1. Source Separation
     sep_cfg = config['separator']
     separator = VocalSeparator(
-        model_filename=sep_cfg['model_filename'],
         output_dir=vocals_tmp,
-        output_format=sep_cfg['output_format'],
-        lead_model_filename=sep_cfg.get('lead_model_filename')
+        config=sep_cfg
     )
-    vocal_files = separator.separate_files(
-        args.input_dir, 
-        enable_lead_separation=sep_cfg.get('enable_lead_separation', False)
-    )
+    vocal_files = separator.separate_files(args.input_dir)
     
     if not vocal_files:
         print("Stopping pipeline: No vocal files generated.")

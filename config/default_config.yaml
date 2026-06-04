@@ -1,9 +1,18 @@
 separator:
+  # Ensemble Preset Mode
+  use_preset: true
+  ensemble_preset: "karaoke"
+  ensemble_algorithm: "avg_wave"
+  
+  # Manual Mode (used if use_preset is false)
   model_filename: "model_bs_roformer_ep_317_sdr_12.9755.ckpt"
   output_format: "WAV"
-  # Lead/Backing Separation
-  enable_lead_separation: true
+  enable_lead_separation: false
   lead_model_filename: "UVR_MDXNET_KARA_2.ckpt"
+
+  # Dereverberation Option
+  enable_dereverb: true
+  dereverb_model_filename: "dereverb_mel_band_roformer_anvuew_sdr_19.1729.ckpt"
 
 slicer:
   threshold: -40
