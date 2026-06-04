@@ -10,7 +10,6 @@ An automated pipeline designed to extract vocals from music files, perform advan
 - **Dataset Splitting**: Automatically distributes files into Train and Validation (exactly 10 clips) folders.
 
 ## 2. Anaconda Environment Setup
-We recommend using Python 3.10 for the best compatibility.
 
 ```bash
 # 1. Create and activate a new virtual environment
@@ -18,7 +17,7 @@ conda create -n vdb_env python=3.10 -y
 conda activate vdb_env
 
 # 2. Install FFmpeg (required for audio decoding)
-conda install -c conda-forge ffmpeg -y
+conda install -c conda ffmpeg -y
 
 # 3. Install project dependencies
 pip install -r requirements.txt
