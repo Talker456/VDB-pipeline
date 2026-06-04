@@ -1,0 +1,18 @@
+separator:
+  model_filename: "model_bs_roformer_ep_317_sdr_12.9755.ckpt"
+  output_format: "WAV"
+  # Lead/Backing Separation
+  enable_lead_separation: true
+  lead_model_filename: "UVR_MDXNET_KARA_2.ckpt"
+
+slicer:
+  threshold: -40
+  min_length: 2000
+  min_interval: 300
+  hop_size: 10
+  sr: 44100
+  mono: true
+
+splitter:
+  val_size: 10
+  seed: 777

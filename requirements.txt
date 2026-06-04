@@ -1,0 +1,5 @@
+audio-separator[gpu]
+librosa
+soundfile
+numpy
+pyyaml
