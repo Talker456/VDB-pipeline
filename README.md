@@ -1,9 +1,9 @@
 # Vocal Dataset Builder (VDB-Pipeline)
 
-An automated pipeline designed to extract vocals from music files, perform advanced preprocessing, and build high-quality datasets for SVC/AI training.
+An automated pipeline designed to extract vocals from music files, perform advanced preprocessing, and build datasets for SVC/AI training.
 
 ## 1. Key Features
-- **Source Separation**: High-quality lead vocal extraction using **Ensemble Presets** (e.g., `karaoke` with `avg_wave` algorithm).
+- **Source Separation**: lead vocal extraction using **Ensemble Presets** (e.g., `karaoke` with `avg_wave` algorithm).
 - **Dereverberation**: Optional final stage to remove reverb and echo, ensuring "Dry" vocals for optimal training.
 - **Audio Slicing**: Automatic slicing based on silence thresholds (retains clips of 2s to 10s).
 - **Format Normalization**: Standardizes format to **44.1kHz, Mono, PCM-16 WAV**.
