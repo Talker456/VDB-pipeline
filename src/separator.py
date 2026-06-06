@@ -97,7 +97,9 @@ class VocalSeparator:
                 output_files = self.separator.separate(os.path.abspath(res_path))
                 
                 for out_file in output_files:
-                    dry_results.append(os.path.join(self.output_dir, out_file))
+                    # Filter for 'No Reverb' or 'Vocals' to avoid including the reverb-only noise file
+                    if "(No Reverb)" in out_file or "(Vocals)" in out_file or "(noreverb)" in out_file.lower():
+                        dry_results.append(os.path.join(self.output_dir, out_file))
             
             print("✅ Dereverberation complete!")
             return dry_results
