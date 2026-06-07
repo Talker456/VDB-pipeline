@@ -65,7 +65,7 @@ def main():
         hop_size=sli_cfg['hop_size'],
         mono=sli_cfg['mono']
     )
-    clip_count = slicer.slice_files(vocal_files, sliced_tmp)
+    clip_count, _ = slicer.slice_files(vocal_files, sliced_tmp)
     
     if clip_count == 0:
         print("Stopping pipeline: No audio clips generated.")

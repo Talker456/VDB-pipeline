@@ -24,10 +24,19 @@ pip install -r requirements.txt
 ```
 
 ## 3. Usage
-### Execution
+### Execution (Standard)
 ```bash
 python src/main.py --input_dir "./path/to/raw_songs" --output_dir "./path/to/output_dataset"
 ```
+
+### Execution (Synchronized Experiment)
+Used for comparing model performance between "Dry" (dereverbed) and "Reverb" (original) vocals with perfectly aligned audio segments.
+```bash
+python src/exp_runner.py --input_dir "./path/to/raw_songs" --output_base "./output_experiment"
+```
+- **Output**: 
+  - `./output_experiment/dry/`: Synchronized "Dry" dataset.
+  - `./output_experiment/reverb/`: Synchronized "Original/Wet" dataset.
 
 ## 4. Directory Structure
 - `src/`: Core source code (Separation, Dereverb, Slicing, Splitting modules).
