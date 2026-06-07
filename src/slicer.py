@@ -71,7 +71,7 @@ class Slicer:
         else:
             samples = waveform
         if (samples.shape[0] + self.hop_size - 1) // self.hop_size <= self.min_length:
-            return [waveform]
+            return [waveform], [(0, samples.shape[0])]
         rms_list = get_rms(y=samples, frame_length=self.win_size, hop_length=self.hop_size).squeeze(0)
         sil_tags = []
         silence_start = None
@@ -128,16 +128,28 @@ class Slicer:
             sil_tags.append((pos, total_frames + 1))
         # Apply and return slices.
         if len(sil_tags) == 0:
-            return [waveform]
+            return [waveform], [(0, waveform.shape[-1])]
         else:
             chunks = []
+            indices = []
+            
+            # Helper to add chunk and track index
+            def add_chunk(start_frame, end_frame):
+                chunk = self._apply_slice(waveform, start_frame, end_frame)
+                if len(chunk) > 0:
+                    chunks.append(chunk)
+                    actual_start = start_frame * self.hop_size
+                    actual_end = actual_start + (chunk.shape[-1] if len(chunk.shape) > 1 else len(chunk))
+                    indices.append((actual_start, actual_end))
+
             if sil_tags[0][0] > 0:
-                chunks.append(self._apply_slice(waveform, 0, sil_tags[0][0]))
+                add_chunk(0, sil_tags[0][0])
             for i in range(len(sil_tags) - 1):
-                chunks.append(self._apply_slice(waveform, sil_tags[i][1], sil_tags[i + 1][0]))
+                add_chunk(sil_tags[i][1], sil_tags[i + 1][0])
             if sil_tags[-1][1] < total_frames:
-                chunks.append(self._apply_slice(waveform, sil_tags[-1][1], total_frames))
-            return chunks
+                add_chunk(sil_tags[-1][1], total_frames)
+            
+            return chunks, indices
 
 
 def main():

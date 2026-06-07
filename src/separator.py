@@ -22,7 +22,7 @@ class VocalSeparator:
                 output_format=self.config.get('output_format', 'WAV')
             )
 
-    def separate_files(self, input_dir):
+    def separate_files(self, input_dir, return_pairs=False):
         audio_extensions = ["*.mp3", "*.wav", "*.flac", "*.m4a"]
         files_to_process = []
         for ext in audio_extensions:
@@ -91,6 +91,7 @@ class VocalSeparator:
             print(f"▶ Final Stage: Dereverberation (Removing Reverb)...")
             self.separator.load_model(self.config.get('dereverb_model_filename'))
             dry_results = []
+            pairs = {}
             for res_path in initial_results:
                 print(f"  - Removing reverb from: {os.path.basename(res_path)}")
                 # Ensure input path to separate is absolute
@@ -98,10 +99,22 @@ class VocalSeparator:
                 
                 for out_file in output_files:
                     # Filter for 'No Reverb' or 'Vocals' to avoid including the reverb-only noise file
-                    if "(No Reverb)" in out_file or "(Vocals)" in out_file or "(noreverb)" in out_file.lower():
-                        dry_results.append(os.path.join(self.output_dir, out_file))
+                    # Using .lower() to ensure case-insensitive matching for robust filtering
+                    out_file_lower = out_file.lower()
+                    is_dry = "(no reverb)" in out_file_lower or "(noreverb)" in out_file_lower
+                    is_wet = "(reverb)" in out_file_lower and not is_dry
+                    
+                    if is_dry or ("(vocals)" in out_file_lower and not is_wet):
+                        dry_path = os.path.join(self.output_dir, out_file)
+                        dry_results.append(dry_path)
+                        pairs[dry_path] = res_path
             
             print("✅ Dereverberation complete!")
-            return dry_results
+            return (dry_results, pairs) if return_pairs else dry_results
 
+        if return_pairs:
+            # If dereverb is disabled, dry and wet are the same
+            pairs = {f: f for f in initial_results}
+            return initial_results, pairs
+            
         return initial_results

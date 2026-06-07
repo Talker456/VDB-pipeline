@@ -4,3 +4,8 @@ __pycache__/
 .venv/
 venv/
 env/
+
+mix/
+output_experiment/
+tmp/
+tmp_exp/
